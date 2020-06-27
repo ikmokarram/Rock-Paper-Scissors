@@ -1,5 +1,5 @@
 # Rock-Paper-Scissors
-This im my implementation to the project Rock, Paper or Scissor from Udacity.
+This is my implementation to the project Rock, Paper or Scissor from Udacity.
 
 1. How to play?
 2. Clone the project and cd into it.
