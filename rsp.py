@@ -1,151 +1,93 @@
-#!/usr/bin/env python3
+# import random module 
+import random 
+  
+# Print multiline instruction 
+# performstring concatenation of string 
+print("Winning Rules of the Rock paper scissor game as follows: \n"
+                                +"Rock vs paper->paper wins \n"
+                                + "Rock vs scissor->Rock wins \n"
+                                +"paper vs scissor->scissor wins \n") 
+  
+while True: 
+    print("Enter choice \n 1. Rock \n 2. paper \n 3. scissor \n") 
+      
+    # take the input from user 
+    choice = int(input("User turn: ")) 
+  
+    # OR is the short-circuit operator 
+    # if any one of the condition is true 
+    # then it return True value 
+      
+    # looping until user enter invalid input 
+    while choice > 3 or choice < 1: 
+        choice = int(input("enter valid input: ")) 
+          
+  
+    # initialize value of choice_name variable 
+    # corresponding to the choice value 
+    if choice == 1: 
+        choice_name = 'Rock'
+    elif choice == 2: 
+        choice_name = 'paper'
+    else: 
+        choice_name = 'scissor'
+          
+    # print user choice  
+    print("user choice is: " + choice_name) 
+    print("\nNow its computer turn.......") 
+  
+    # Computer chooses randomly any number  
+    # among 1 , 2 and 3. Using randint method 
+    # of random module 
+    comp_choice = random.randint(1, 3) 
+      
+    # looping until comp_choice value  
+    # is equal to the choice value 
+    while comp_choice == choice: 
+        comp_choice = random.randint(1, 3) 
+  
+    # initialize value of comp_choice_name  
+    # variable corresponding to the choice value 
+    if comp_choice == 1: 
+        comp_choice_name = 'Rock'
+    elif comp_choice == 2: 
+        comp_choice_name = 'paper'
+    else: 
+        comp_choice_name = 'scissor'
+          
+    print("Computer choice is: " + comp_choice_name) 
+  
+    print(choice_name + " V/s " + comp_choice_name) 
+  
+    # condition for winning 
+    if((choice == 1 and comp_choice == 2) or
+      (choice == 2 and comp_choice ==1 )): 
+        print("paper wins => ", end = "") 
+        result = "paper"
+          
+    elif((choice == 1 and comp_choice == 3) or
+        (choice == 3 and comp_choice == 1)): 
+        print("Rock wins =>", end = "") 
+        result = "Rock"
+    else: 
+        print("scissor wins =>", end = "") 
+        result = "scissor"
+  
+    # Printing either user or computer wins 
+    if result == choice_name: 
+        print("<== User wins ==>") 
+    else: 
+        print("<== Computer wins ==>") 
+          
+    print("Do you want to play again? (Y/N)") 
+    ans = input() 
+  
+  
+    # if user input n or N then condition is True 
+    if ans == 'n' or ans == 'N': 
+        break
+      
+# after coming out of the while loop 
+# we print thanks for playing 
+print("\nThanks for playing") 
 
-"""This program plays a game of Rock, Paper, Scissors between two Players,
-and reports both Player's scores each round."""
-
-moves = ['rock', 'paper', 'scissors']
-
-"""The Player class is the parent class for all of the Players
-in this game"""
-
-
-import random
-
-
-class Player:
-    moves = ['rock', 'paper', 'scissors']
-
-    def __init__(self):
-        # initialization of the list for the move function
-        # in the class CyclePlayer
-        self.my_move = self.moves
-        # random choise for first round
-        self.their_move = random.choice(self.moves)
-
-    def learn(self, my_move, their_move):
-        # moves of the players stored
-        self.my_move = my_move
-        self.their_move = their_move
-
-
-class RandomPlayer(Player):
-    def move(self):
-        # random move
-        return random.choice(self.moves)
-
-
-class ReflectPlayer(Player):
-    def move(self):
-        # reflects the choice of the previous round
-        return self.their_move
-
-
-class CyclePlayer(Player):
-    def move(self):
-        # choses a different move of the last round
-        if self.my_move == self.moves[0]:
-            return self.moves[1]
-        elif self.my_move == self.moves[1]:
-            return self.moves[2]
-        else:
-            return self.moves[0]
-
-
-class HumanPlayer(Player):
-    def move(self):
-        # repeats the input statement until there is
-        # a match with the list or exit
-        while True:
-            move_human = input("Rock, paper, scissors? > ")
-            if move_human.lower() in self.moves:
-                return move_human.lower()
-            elif move_human.lower() == 'exit':
-                exit()
-
-
-class Game:
-    def __init__(self, p1, p2):
-        self.p1 = p1
-        self.p2 = p2
-        # scores initialization
-        self.score_p1 = 0
-        self.score_p2 = 0
-
-    def beats(self, one, two):
-        return ((one == 'rock' and two == 'scissors') or
-                (one == 'scissors' and two == 'paper') or
-                (one == 'paper' and two == 'rock'))
-
-    def rounds(self):
-        # repeats the input statement until there is
-        # a valid choose or exit
-        while True:
-            self.number_rounds = input(
-                "How many rounds do you want want play? > ")
-            if self.number_rounds.isdigit():
-                return self.number_rounds
-            elif self.number_rounds.lower() == 'exit':
-                exit()
-
-    def play_round(self):
-        # move
-        move1 = self.p1.move()
-        move2 = self.p2.move()
-        # resault of the match and storing player score
-        if self.beats(move1, move2):
-            self.score_p1 += 1
-            winner = '**** PLAYER ONE WINS ****'
-        elif move1 == move2:
-            self.score_p1 = self.score_p1
-            self.score_p2 = self.score_p2
-            winner = '**** TIE ****'
-        else:
-            self.score_p2 += 1
-            winner = '**** PLAYER TWO WINS ****'
-        # output the match information
-        print(
-            f"> You played : {move1}"
-            f"\n> Opponent played : {move2}"
-            f"\n{winner}"
-            f"\nScore: Player one ( {self.score_p1} ),"
-            f"Player two ( {self.score_p2} )"
-        )
-        self.p1.learn(move1, move2)
-        self.p2.learn(move2, move1)
-
-    def play_game(self):
-        print(
-            ">>>> Game start! <<<<"
-            "\n(If do you want exit game, please digits \'exit\'"
-            " when the game will ask you the number of rounds or your move)"
-        )
-        self.rounds()
-        for round in range(int(self.number_rounds)):
-            print(f"\nRound {round + 1} --")
-            self.play_round()
-        if self.score_p1 == self.score_p2:
-            print(
-                f"\n---- The game ended in a tie! ----"
-                f"\nScore: Player one ( {self.score_p1} ),"
-                f"Player two ( {self.score_p2} )"
-            )
-        elif self.score_p1 > self.score_p2:
-            print(
-                f"\n---- Player ONE has won! ----"
-                f"\nScore: Player one ( {self.score_p1} )*,"
-                f"Player two ( {self.score_p2} )"
-            )
-        else:
-            print(
-                f"\n---- Player TWO has won! ----"
-                f"\nScore: Player one ( {self.score_p1} ),"
-                f"Player two ( {self.score_p2} )*"
-            )
-
-
-if __name__ == '__main__':
-    # organize the game with a human player and
-    # randomly choose an attitude from the other player
-    game = Game(HumanPlayer(), random.choice(
-        [RandomPlayer(), ReflectPlayer(), CyclePlayer()]))
-    game.play_game()
